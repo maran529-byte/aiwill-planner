@@ -27,7 +27,7 @@ export const PRICING_TIERS = [
     price: 199,
     description: 'AI智能生成文书草稿',
     features: [
-      '7大模块智能问卷',
+      '9大模块智能问卷',
       'AI生成文书草稿',
       '永久保存，随时修改',
       'PDF下载',

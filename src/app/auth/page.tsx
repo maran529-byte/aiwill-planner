@@ -39,7 +39,8 @@ export default function AuthPage() {
       }
 
       // 登录成功后跳转
-      router.push('/dashboard')
+      const redirect = new URLSearchParams(window.location.search).get('redirect')
+      router.push(redirect || '/dashboard')
     } catch (err) {
       setError('网络错误，请重试')
       setLoading(false)

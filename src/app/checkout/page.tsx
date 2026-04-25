@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { PRICING_TIERS } from '@/lib/config'
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const router = useRouter()
-  const [selectedTier, setSelectedTier] = useState('')
+  const searchParams = useSearchParams()
+  const preselectedTier = searchParams.get('tier')
+  const [selectedTier, setSelectedTier] = useState(preselectedTier || '')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -30,7 +32,6 @@ export default function CheckoutPage() {
       }
 
       if (data.mode === 'development') {
-        // 开发模式直接跳转成功页
         router.push(`/checkout/success?order_id=${data.orderId}&tier=${tierId}`)
       } else if (data.url) {
         window.location.href = data.url
@@ -52,13 +53,18 @@ export default function CheckoutPage() {
           {PRICING_TIERS.map((tier) => (
             <div
               key={tier.id}
-              className={`bg-white rounded-2xl shadow-lg p-8 ${
+              className={`bg-white rounded-2xl shadow-lg p-8 transition-all ${
                 tier.recommended ? 'ring-2 ring-blue-500 relative' : ''
-              }`}
+              } ${selectedTier === tier.id ? 'ring-2 ring-primary shadow-xl scale-105' : ''}`}
             >
               {tier.recommended && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-sm px-4 py-1 rounded-full">
                   推荐
+                </span>
+              )}
+              {selectedTier === tier.id && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-sm px-4 py-1 rounded-full">
+                  已选择
                 </span>
               )}
               <h3 className="text-xl font-bold mb-2">{tier.name}</h3>
@@ -100,5 +106,13 @@ export default function CheckoutPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 py-12 text-center">加载中...</div>}>
+      <CheckoutContent />
+    </Suspense>
   )
 }

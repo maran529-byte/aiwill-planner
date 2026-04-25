@@ -15,11 +15,12 @@ export default function HomePage() {
             </div>
             <span className="text-xl font-bold text-primary">爱的延续</span>
           </div>
-          <nav className="hidden md:flex gap-6">
+          <nav className="hidden md:flex gap-6 items-center">
             <a href="#document-types" className="text-gray-600 hover:text-primary transition">文书类型</a>
             <a href="#features" className="text-gray-600 hover:text-primary transition">功能介绍</a>
             <a href="#pricing" className="text-gray-600 hover:text-primary transition">价格方案</a>
             <a href="#testimonials" className="text-gray-600 hover:text-primary transition">用户评价</a>
+            <Link href="/auth" className="text-primary hover:text-primary/80 transition font-medium">登录/注册</Link>
           </nav>
         </div>
       </header>
@@ -274,7 +275,7 @@ export default function HomePage() {
                   ))}
                 </ul>
                 <Link
-                  href="/questionnaire"
+                  href={`/auth?redirect=/checkout&tier=${tier.id}`}
                   className={`block text-center py-3 rounded-lg font-medium transition ${
                     tier.recommended
                       ? 'bg-accent text-white hover:opacity-90'
