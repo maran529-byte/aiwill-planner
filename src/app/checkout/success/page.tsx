@@ -2,17 +2,97 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+
+// 套餐名称映射
+function getTierName(tierId: string): string {
+  const names: Record<string, string> = {
+    'limited': '限时活动版',
+    'ai-only': 'AI专属版',
+    'ai-lawyer': '律师护航版',
+  }
+  return names[tierId] || tierId
+}
+
+// 套餐价格映射
+function getTierPrice(tierId: string): string {
+  const prices: Record<string, string> = {
+    'limited': '29.9',
+    'ai-only': '199',
+    'ai-lawyer': '699',
+  }
+  return prices[tierId] || '0'
+}
 
 export default function CheckoutSuccessPage() {
   const [sessionData, setSessionData] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get session data from localStorage (set by checkout page)
-    const data = localStorage.getItem('checkout_session')
-    if (data) {
-      setSessionData(JSON.parse(data))
+    const params = new URLSearchParams(window.location.search)
+    const orderId = params.get('order_id')
+    const tier = params.get('tier')
+    const sessionId = params.get('session_id')
+
+    if (orderId && tier) {
+      // 开发模式：直接从 URL 参数获取
+      setSessionData({
+        orderId,
+        tierId: tier,
+        tierName: getTierName(tier),
+        amount: getTierPrice(tier),
+        mode: 'development',
+      })
+      setLoading(false)
+    } else if (sessionId) {
+      // 生产模式：验证 session
+      fetch(`/api/stripe/verify?session_id=${sessionId}`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.valid) {
+            setSessionData({
+              sessionId,
+              tierId: data.tier,
+              tierName: getTierName(data.tier),
+              amount: data.amount,
+              mode: 'production',
+            })
+          }
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(false)
     }
   }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">验证订单中...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!sessionData) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-4xl">⚠️</span>
+          </div>
+          <h1 className="text-2xl font-bold text-primary mb-2">订单信息不存在</h1>
+          <p className="text-gray-600 mb-6">无法找到您的订单信息，请联系客服</p>
+          <Link href="/checkout" className="btn-primary block text-center w-full py-3">
+            返回购买页面
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center px-4">
@@ -33,7 +113,9 @@ export default function CheckoutSuccessPage() {
             <div className="flex justify-between">
               <span className="text-gray-500">订单编号</span>
               <span className="text-primary font-mono">
-                {sessionData?.sessionId?.slice(-8) || 'N/A'}
+                {sessionData.mode === 'development'
+                  ? sessionData.orderId?.slice(-8)
+                  : sessionData.sessionId?.slice(-8)}
               </span>
             </div>
             <div className="flex justify-between">
