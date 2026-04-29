@@ -50,5 +50,18 @@ export const PRICING_TIERS = [
 
 ];
 
+// Document Types
+export const DOCUMENT_TYPES = [
+  { id: 'prenup', name: '婚前协议', icon: '💍' },
+  { id: 'marital', name: '婚内财产约定', icon: '🏠' },
+  { id: 'gift', name: '赠与协议', icon: '🎁' },
+  { id: 'custody', name: '抚养协议', icon: '👶' },
+  { id: 'divorce', name: '离婚协议', icon: '💔' },
+  { id: 'division', name: '分家协议', icon: '🏡' },
+  { id: 'estate', name: '遗赠扶养协议', icon: '🧓' },
+  { id: 'guardianship', name: '意定监护', icon: '🛡️' },
+  { id: 'will', name: '遗嘱', icon: '📜' },
+];
+
 // Platform Fee
 export const PLATFORM_FEE_RATIO = 0.15; // 15% platform fee

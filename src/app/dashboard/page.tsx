@@ -91,18 +91,18 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* My Wills */}
+          {/* My Documents */}
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
               <span className="text-2xl">📋</span>
             </div>
-            <h2 className="text-xl font-semibold text-primary mb-2">我的遗嘱</h2>
-            <p className="text-gray-600 mb-4">查看和管理您已完成的遗嘱文档。</p>
+            <h2 className="text-xl font-semibold text-primary mb-2">我的规划</h2>
+            <p className="text-gray-600 mb-4">查看和管理您已创建的文书。</p>
             <Link
-              href="/result"
+              href="/my-documents"
               className="inline-block bg-accent text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
             >
-              查看遗嘱
+              查看文书
             </Link>
           </div>
 
