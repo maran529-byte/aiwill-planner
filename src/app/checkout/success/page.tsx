@@ -147,7 +147,7 @@ export default function CheckoutSuccessPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-accent mt-0.5">2.</span>
-              <span>如需律师审核服务，您的专属律师将在24小时内与您联系</span>
+              <span>{sessionData.tierId === 'ai-lawyer' ? '您的专属律师将在24小时内与您联系' : '您可随时在个人中心查看订单状态'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-accent mt-0.5">3.</span>
