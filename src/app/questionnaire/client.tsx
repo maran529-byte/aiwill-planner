@@ -16,6 +16,9 @@ const STORAGE_KEYS: Record<DocumentType, string> = {
   division: 'division_questionnaire_answers',
 }
 
+const QUESTIONNAIRE_SUBMIT_COUNT_KEY = 'questionnaire_submit_count'
+const QUESTIONNAIRE_SUBMIT_LIMIT = 30
+
 const RESULT_PATHS: Record<DocumentType, string> = {
   prenup: '/result?type=prenup',
   marital: '/result?type=marital',
@@ -57,6 +60,10 @@ function QuestionnaireContent() {
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0)
   const [answers, setAnswers] = useState<Record<string, any>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitCount, setSubmitCount] = useState(0)
+
+  const submitRemaining = Math.max(0, QUESTIONNAIRE_SUBMIT_LIMIT - submitCount)
+  const isSubmitDisabled = submitCount >= QUESTIONNAIRE_SUBMIT_LIMIT
 
   const { modules, questions, title, subtitle } = useMemo(
     () => getQuestionnaireByType(docType),
@@ -88,6 +95,12 @@ function QuestionnaireContent() {
         setAnswers(JSON.parse(saved))
       } catch {}
     }
+    const savedCount = localStorage.getItem(QUESTIONNAIRE_SUBMIT_COUNT_KEY)
+    if (savedCount) {
+      try {
+        setSubmitCount(parseInt(savedCount, 10) || 0)
+      } catch {}
+    }
   }, [docType])
 
   const handleAnswer = (value: any) => {
@@ -116,6 +129,10 @@ function QuestionnaireContent() {
   }
 
   const handleSubmit = async () => {
+    if (isSubmitDisabled) return
+    const newCount = submitCount + 1
+    localStorage.setItem(QUESTIONNAIRE_SUBMIT_COUNT_KEY, String(newCount))
+    setSubmitCount(newCount)
     setIsSubmitting(true)
     try {
       const res = await fetch(API_PATHS[docType], {
@@ -152,6 +169,11 @@ function QuestionnaireContent() {
           >
             退出
           </button>
+          {submitCount > 0 && (
+            <span className="text-xs text-gray-400 ml-3">
+              剩余 {submitRemaining} 次
+            </span>
+          )}
         </div>
       </header>
 
