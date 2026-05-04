@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
+import { DOCUMENT_TYPES } from '@/lib/config'
 
 // 套餐名称映射
 function getTierName(tierId: string): string {
@@ -27,6 +29,8 @@ function getTierPrice(tierId: string): string {
 export default function CheckoutSuccessPage() {
   const [sessionData, setSessionData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [selectedDocType, setSelectedDocType] = useState('will')
+  const router = useRouter()
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -156,9 +160,46 @@ export default function CheckoutSuccessPage() {
           </ul>
         </div>
 
+        {/* Document Type Selection */}
+        <div className="card mb-6">
+          <h2 className="text-lg font-semibold text-primary mb-4">选择要创建的文书</h2>
+          <div className="grid grid-cols-3 gap-3">
+            {DOCUMENT_TYPES.slice(0, 6).map(doc => (
+              <button
+                key={doc.id}
+                onClick={() => setSelectedDocType(doc.id)}
+                className={`p-3 rounded-lg border-2 text-center transition ${
+                  selectedDocType === doc.id
+                    ? 'border-accent bg-accent/5 text-primary'
+                    : 'border-gray-200 hover:border-accent/50'
+                }`}
+              >
+                <span className="text-xl mb-1 block">{doc.icon}</span>
+                <span className="text-xs font-medium">{doc.name}</span>
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-3 gap-3 mt-3">
+            {DOCUMENT_TYPES.slice(6).map(doc => (
+              <button
+                key={doc.id}
+                onClick={() => setSelectedDocType(doc.id)}
+                className={`p-3 rounded-lg border-2 text-center transition ${
+                  selectedDocType === doc.id
+                    ? 'border-accent bg-accent/5 text-primary'
+                    : 'border-gray-200 hover:border-accent/50'
+                }`}
+              >
+                <span className="text-xl mb-1 block">{doc.icon}</span>
+                <span className="text-xs font-medium">{doc.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Actions */}
         <div className="space-y-3">
-          <Link href="/questionnaire" className="btn-primary block text-center w-full py-3">
+          <Link href={`/questionnaire?type=${selectedDocType}`} className="btn-primary block text-center w-full py-3">
             开始填写AI问卷 📋
           </Link>
           <Link href="/dashboard" className="btn-secondary block text-center w-full py-3">
