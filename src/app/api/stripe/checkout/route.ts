@@ -3,7 +3,7 @@ import { stripe, STRIPE_PRICES } from '@/lib/stripe'
 
 export async function POST(request: NextRequest) {
   try {
-    const { tierId, userId } = await request.json()
+    const { tierId, userId, bloggerId, ref } = await request.json()
 
     if (!tierId || !STRIPE_PRICES[tierId]) {
       return NextResponse.json({ error: '无效的套餐' }, { status: 400 })
@@ -35,6 +35,8 @@ export async function POST(request: NextRequest) {
       metadata: {
         tierId,
         userId: userId || '',
+        bloggerId: bloggerId || '',
+        ref: ref || '',
       },
     })
 

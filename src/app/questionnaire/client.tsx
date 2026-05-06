@@ -18,6 +18,7 @@ const STORAGE_KEYS: Record<DocumentType, string> = {
 
 const QUESTIONNAIRE_SUBMIT_COUNT_KEY = 'questionnaire_submit_count'
 const QUESTIONNAIRE_SUBMIT_LIMIT = 30
+const ATTRIBUTION_KEY = 'questionnaire_attribution'
 
 const RESULT_PATHS: Record<DocumentType, string> = {
   prenup: '/result?type=prenup',
@@ -61,6 +62,8 @@ function QuestionnaireContent() {
   const [answers, setAnswers] = useState<Record<string, any>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitCount, setSubmitCount] = useState(0)
+  const [orderClaimId, setOrderClaimId] = useState('')
+  const [showOrderClaim, setShowOrderClaim] = useState(false)
 
   const submitRemaining = Math.max(0, QUESTIONNAIRE_SUBMIT_LIMIT - submitCount)
   const isSubmitDisabled = submitCount >= QUESTIONNAIRE_SUBMIT_LIMIT
@@ -101,7 +104,23 @@ function QuestionnaireContent() {
         setSubmitCount(parseInt(savedCount, 10) || 0)
       } catch {}
     }
-  }, [docType])
+    // Capture and persist attribution params (source, ref, plan) from URL
+    const source = searchParams.get('source')
+    const ref = searchParams.get('ref')
+    const plan = searchParams.get('plan')
+    const savedAttr = localStorage.getItem(ATTRIBUTION_KEY)
+    if (!savedAttr && (source || ref || plan)) {
+      localStorage.setItem(ATTRIBUTION_KEY, JSON.stringify({ source, ref, plan }))
+    } else if (savedAttr) {
+      try {
+        const attr = JSON.parse(savedAttr)
+        if (!attr.source && source) attr.source = source
+        if (!attr.ref && ref) attr.ref = ref
+        if (!attr.plan && plan) attr.plan = plan
+        localStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(attr))
+      } catch {}
+    }
+  }, [docType, searchParams])
 
   const handleAnswer = (value: any) => {
     const newAnswers = { ...answers, [currentQuestion.id]: value }
@@ -134,23 +153,32 @@ function QuestionnaireContent() {
     localStorage.setItem(QUESTIONNAIRE_SUBMIT_COUNT_KEY, String(newCount))
     setSubmitCount(newCount)
     setIsSubmitting(true)
+    // Retrieve persisted attribution data
+    let attribution: Record<string, string> = {}
+    try {
+      const raw = localStorage.getItem(ATTRIBUTION_KEY)
+      if (raw) attribution = JSON.parse(raw)
+    } catch {}
     try {
       const res = await fetch(API_PATHS[docType], {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers, docType }),
+        body: JSON.stringify({ answers, docType, attribution, orderClaimId }),
       })
       if (res.ok) {
         localStorage.removeItem(STORAGE_KEYS[docType])
+        localStorage.removeItem(ATTRIBUTION_KEY)
         router.push(RESULT_PATHS[docType])
       }
     } catch {
       localStorage.removeItem(STORAGE_KEYS[docType])
+      localStorage.removeItem(ATTRIBUTION_KEY)
       router.push(RESULT_PATHS[docType])
     }
   }
 
   const isLastQuestion = effectiveQuestionIdx === visibleQuestions.length - 1 && currentModuleIdx === modules.length - 1
+
   const currentAnswer = currentQuestion ? (answers[currentQuestion.id] ?? '') : ''
 
   return (
@@ -312,6 +340,21 @@ function QuestionnaireContent() {
                 })}
               </div>
             )}
+          </div>
+        )}
+
+        {isLastQuestion && (
+          <div className="mt-6 p-4 bg-accent/10 rounded-lg border border-accent/30">
+            <p className="text-sm text-accent font-medium mb-2">🎁 绑定博主订单号（选填）</p>
+            <p className="text-xs text-gray-500 mb-3">如果博主给你发了订单号，在这里填写可绑定博主关系</p>
+            <input
+              type="text"
+              value={orderClaimId}
+              onChange={e => setOrderClaimId(e.target.value.toUpperCase())}
+              placeholder="请输入订单号，如 AWM20250505"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
+              maxLength={20}
+            />
           </div>
         )}
 
