@@ -33,7 +33,7 @@ export default function HomePage() {
             财产与身份规划
           </h1>
           <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            从婚前协议到遗嘱，9类高频文书一站搞定。<br />
+            从婚前协议到财产传承安排，9类高频文书一站搞定。<br />
             AI智能引导，30分钟完成人生重要规划。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -55,13 +55,13 @@ export default function HomePage() {
               <option value="division">🏢 分家析产协议</option>
               <option value="estate">🧓 遗赠扶养协议</option>
               <option value="guardianship">🛡️ 意定监护协议</option>
-              <option value="will">📜 遗嘱</option>
+              <option value="will">📜 财产传承安排</option>
             </select>
             <a href="#pricing" className="btn-secondary text-lg px-8 py-4">
               了解价格
             </a>
           </div>
-          <p className="mt-6 text-sm text-gray-500">已有 12,847 位用户 · 9类文书类型 · 24h律师审核</p>
+          <p className="mt-6 text-sm text-gray-500">已有 12,847 位用户 · 9类文书类型 · 24h专业审核</p>
         </div>
       </section>
 
@@ -69,7 +69,7 @@ export default function HomePage() {
       <section id="document-types" className="py-20">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
-            覆盖家庭全生命周期的法律文书
+            覆盖家庭全生命周期的专业文书
           </h2>
           <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
             从恋爱到终老，9类高频文书一站搞定<br />
@@ -164,7 +164,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-primary mb-1">遗赠扶养协议</h3>
-                  <p className="text-sm text-gray-600 mb-2">约定由亲属/外人赡养，百年后财产赠与对方，比遗嘱更具约束力</p>
+                  <p className="text-sm text-gray-600 mb-2">约定由亲属/外人赡养，百年后财产赠与对方，比一般安排更具约束力</p>
                   <span className="text-xs text-accent font-medium">中老年刚需</span>
                 </div>
               </div>
@@ -189,7 +189,7 @@ export default function HomePage() {
                   <span className="text-2xl">📜</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-primary mb-1">遗嘱</h3>
+                  <h3 className="text-lg font-bold text-primary mb-1">财产传承安排</h3>
                   <p className="text-sm text-gray-600 mb-2">安排身后财产传承，确保家人无忧</p>
                   <span className="text-xs text-gray-500">人生终极规划</span>
                 </div>
@@ -226,8 +226,8 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">⚖️</span>
               </div>
-              <h3 className="text-xl font-semibold text-primary mb-2">律师专业审核</h3>
-              <p className="text-gray-600">合作律师全程审核，确保法律效力，让您无后顾之忧</p>
+              <h3 className="text-xl font-semibold text-primary mb-2">专业团队审核</h3>
+              <p className="text-gray-600">专业团队全程审核，确保文书效力，让您无后顾之忧</p>
             </div>
             <div className="card text-center">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -307,13 +307,13 @@ export default function HomePage() {
                 </div>
                 <div>
                   <p className="font-medium text-primary">王先生</p>
-                  <p className="text-sm text-gray-500">北京 · 律师护航版</p>
+                  <p className="text-sm text-gray-500">北京 · 专家护航版</p>
                 </div>
               </div>
             </div>
             <div className="testimonial-card">
               <p className="text-gray-700 mb-4">
-                "担心遗嘱写不规范让家人产生矛盾。有了律师审核，心里踏实多了。给这个平台点赞！"
+                "担心安排不规范让家人产生矛盾。有了专业团队审核，心里踏实多了。给这个平台点赞！"
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white font-bold">
@@ -321,7 +321,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <p className="font-medium text-primary">李女士</p>
-                  <p className="text-sm text-gray-500">上海 · 律师护航版</p>
+                  <p className="text-sm text-gray-500">上海 · 专家护航版</p>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <p className="font-medium text-primary">张先生</p>
-                  <p className="text-sm text-gray-500">深圳 · 律师护航版</p>
+                  <p className="text-sm text-gray-500">深圳 · 专家护航版</p>
                 </div>
               </div>
             </div>

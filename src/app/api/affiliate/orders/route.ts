@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { BloggerDB } from '@/lib/blogger-db'
+import { bloggerDB } from '@/lib/blogger-db'
 
-const db = new BloggerDB()
+const db = bloggerDB
 
 // GET /api/affiliate/orders - 获取博主订单列表
 export async function GET(request: NextRequest) {
@@ -13,14 +13,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing blogger_id' }, { status: 400 })
     }
 
-    const orders = db.getAffiliateOrders(bloggerId)
+    const orders = await db.getAffiliateOrdersByBlogger(bloggerId)
 
     return NextResponse.json({
       orders: orders.map(order => ({
         id: order.order_id,
         tier_name: order.tier_id,
         amount: order.amount,
-        commission: order.commission,
+        commission: order.commission_amount,
         created_at: order.created_at,
       })),
     })

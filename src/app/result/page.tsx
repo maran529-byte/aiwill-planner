@@ -70,7 +70,7 @@ export default function ResultPage() {
 
     // Add title
     doc.setFontSize(20)
-    doc.text('遗嘱草案', 105, 20, { align: 'center' })
+    doc.text('规划文书', 105, 20, { align: 'center' })
 
     // Add date
     doc.setFontSize(10)
@@ -96,10 +96,10 @@ export default function ResultPage() {
     // Add footer on last page
     doc.setFontSize(9)
     doc.setTextColor(128)
-    doc.text('本遗嘱草案仅供参考，具体法律效力请咨询专业律师。', 105, 285, { align: 'center' })
+    doc.text('本规划文书仅供参考，具体安排请咨询专业顾问。', 105, 285, { align: 'center' })
 
     // Save the PDF
-    doc.save(`遗嘱草案_${new Date().toISOString().split('T')[0]}.pdf`)
+    doc.save(`规划文书_${new Date().toISOString().split('T')[0]}.pdf`)
   }
 
   if (!result) {
@@ -134,7 +134,7 @@ export default function ResultPage() {
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* Success Banner */}
         <div className="bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl p-6 mb-8 text-center">
-          <h1 className="text-xl md:text-2xl font-bold mb-2">🎉 您的遗嘱草案已生成</h1>
+          <h1 className="text-xl md:text-2xl font-bold mb-2">🎉 您的规划文书已生成</h1>
           <p className="text-white/80">生成时间：{new Date(result.generatedAt).toLocaleString('zh-CN')}</p>
         </div>
 
@@ -143,7 +143,7 @@ export default function ResultPage() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="bg-primary/5 px-6 py-4 border-b">
-                <h2 className="text-lg font-bold text-primary">📄 遗嘱草案</h2>
+                <h2 className="text-lg font-bold text-primary">📄 规划文书</h2>
               </div>
               <div className="p-6">
                 <pre className="whitespace-pre-wrap font-sans text-gray-700 text-sm leading-relaxed">
@@ -155,7 +155,7 @@ export default function ResultPage() {
                   onClick={handleDownload}
                   className="btn-primary flex items-center gap-2"
                 >
-                  📥 下载草案
+                  📥 下载文书
                 </button>
                 <button className="btn-secondary flex items-center gap-2">
                   🖨️ 打印
@@ -188,7 +188,7 @@ export default function ResultPage() {
           <div className="space-y-6">
             {/* Lawyer Profile */}
             <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-bold text-primary mb-4">👨‍💼 推荐律师</h3>
+              <h3 className="text-lg font-bold text-primary mb-4">👨‍💼 推荐专家</h3>
               <div className="text-center">
                 <div className="w-20 h-20 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
                   👨‍💼
@@ -224,7 +224,7 @@ export default function ResultPage() {
                 onClick={() => setShowContactForm(true)}
                 className="w-full btn-primary mt-4"
               >
-                预约律师咨询
+                预约专家咨询
               </button>
             </div>
 
@@ -267,7 +267,7 @@ export default function ResultPage() {
             <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
               <h4 className="font-bold text-yellow-800 mb-2">⚠️ 重要提示</h4>
               <p className="text-xs text-yellow-700">
-                本草案为AI生成，仅供参考，不构成法律意见。为确保法律效力，请预约专业律师进行审核，或前往公证机构办理公证手续。
+                本草案为AI生成，仅供参考，不构成专业意见。为确保安排妥当，请预约专业团队进行审核，或前往公证机构办理公证手续。
               </p>
             </div>
           </div>
@@ -278,7 +278,7 @@ export default function ResultPage() {
       {showContactForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl max-w-md w-full p-6">
-            <h3 className="text-xl font-bold text-primary mb-4">预约律师咨询</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">预约专家咨询</h3>
             <form onSubmit={handleContactSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">

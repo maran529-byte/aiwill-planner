@@ -11,7 +11,7 @@ function getTierName(tierId: string): string {
   const names: Record<string, string> = {
     'limited': '限时活动版',
     'ai-only': 'AI专属版',
-    'ai-lawyer': '律师护航版',
+    'ai-lawyer': '专家护航版',
   }
   return names[tierId] || tierId
 }
@@ -151,7 +151,7 @@ export default function CheckoutSuccessPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-accent mt-0.5">2.</span>
-              <span>{sessionData.tierId === 'ai-lawyer' ? '您的专属律师将在24小时内与您联系' : '您可随时在个人中心查看订单状态'}</span>
+              <span>{sessionData.tierId === 'ai-lawyer' ? '您的专属专家将在24小时内与您联系' : '您可随时在个人中心查看订单状态'}</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-accent mt-0.5">3.</span>

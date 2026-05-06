@@ -1,7 +1,7 @@
 // 博主管理API路由
 import { NextRequest, NextResponse } from 'next/server'
 import { bloggerDB } from '@/lib/blogger-db'
-import { BLOGGER_STATUS, COMMISSION_RATE_RANGE } from '@/lib/blogger-types'
+import { BLOGGER_STATUS, COMMISSION_RATE_RANGE, Blogger } from '@/lib/blogger-types'
 
 // GET /api/blogger - 获取博主列表
 export async function GET(request: NextRequest) {

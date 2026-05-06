@@ -112,7 +112,7 @@ async function notifyBlogger(blogger: any, order: any, commission: number) {
   const tierNames: Record<string, string> = {
     'limited': '基础版',
     'ai-only': 'AI专属版',
-    'ai-lawyer': 'AI律师版',
+'ai-lawyer': '专家护航版',
   }
 
   const tierName = tierNames[order.tier_id] || order.tier_id

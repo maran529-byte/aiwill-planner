@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { BloggerDB } from '@/lib/blogger-db'
+import { bloggerDB } from '@/lib/blogger-db'
 import { PLATFORM_FEE_RATIO } from '@/lib/config'
 
-const db = new BloggerDB()
+const db = bloggerDB
 
 // GET /api/commission/calculate - 计算博主佣金
 export async function GET(request: NextRequest) {
@@ -13,17 +13,17 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Missing blogger_id' }, { status: 400 })
   }
 
-  const blogger = db.getBlogger(bloggerId)
+  const blogger = await db.getBloggerById(bloggerId)
   if (!blogger) {
     return NextResponse.json({ error: 'Blogger not found' }, { status: 404 })
   }
 
-  const orders = db.getAffiliateOrders(bloggerId)
+  const orders = await db.getAffiliateOrdersByBlogger(bloggerId)
   const commissionRate = blogger.commission_rate
 
   // 按状态分组统计
   const pending = orders.filter(o => o.status === 'pending')
-  const settled = orders.filter(o => o.status === 'settled')
+  const settled = orders.filter(o => o.status === 'paid')
 
   const pendingCommission = pending.reduce((sum, o) => {
     const gross = o.amount * commissionRate
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing blogger_id' }, { status: 400 })
     }
 
-    const blogger = db.getBlogger(blogger_id)
+    const blogger = await db.getBloggerById(blogger_id)
     if (!blogger) {
       return NextResponse.json({ error: 'Blogger not found' }, { status: 404 })
     }
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     // 更新订单状态为已结算
     let updatedCount = 0
     for (const orderId of order_ids || []) {
-      const success = db.settleAffiliateOrder(blogger_id, orderId)
+      const success =    await db.updateAffiliateOrderStatus(orderId, 'paid')
       if (success) updatedCount++
     }
 

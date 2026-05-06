@@ -6,7 +6,7 @@ import { bloggerDB } from '@/lib/blogger-db'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { blogger_id, link_name, target_url } = body
+    const { blogger_id, target_url } = body
 
     if (!blogger_id || !target_url) {
       return NextResponse.json(
@@ -38,13 +38,11 @@ export async function POST(request: NextRequest) {
 
     const link = await bloggerDB.createPromotionLink({
       blogger_id,
-      link_name: link_name || `推广链接_${Date.now()}`,
       link_code: linkCode,
       target_url: fullUrl,
       utm_source: 'douyin',
       utm_medium: 'influencer',
       utm_campaign: blogger.douyin_id,
-      utm_content: linkCode,
     })
 
     return NextResponse.json({

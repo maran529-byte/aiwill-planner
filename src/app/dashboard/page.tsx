@@ -57,9 +57,7 @@ export default function DashboardPage() {
             <span className="text-xl font-bold text-primary">爱的延续</span>
           </Link>
           <div className="flex items-center gap-4">
-            <span className="text-gray-600">
-              {user?.name || user?.email}
-            </span>
+            <span className="text-gray-600">专家预约 {user?.name || user?.email}</span>
             <button
               onClick={handleLogout}
               className="text-gray-500 hover:text-red-500 transition text-sm"
@@ -111,8 +109,8 @@ export default function DashboardPage() {
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
               <span className="text-2xl">⚖️</span>
             </div>
-            <h2 className="text-xl font-semibold text-primary mb-2">律师预约</h2>
-            <p className="text-gray-600 mb-4">预约专业律师进行一对一审核服务。</p>
+            <h2 className="text-xl font-semibold text-primary mb-2">专家预约</h2>
+            <p className="text-gray-600 mb-4">预约专业团队进行一对一审核服务。</p>
             <Link
               href="/lawyer"
               className="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"

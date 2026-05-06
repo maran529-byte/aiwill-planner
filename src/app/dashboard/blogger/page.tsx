@@ -133,7 +133,7 @@ export default function BloggerDashboardPage() {
   const tierNames: Record<string, string> = {
     'limited': '基础版',
     'ai-only': 'AI专属版',
-    'ai-lawyer': 'AI律师版',
+    'ai-lawyer': 'AI专家版',
   }
 
   if (loading) {
@@ -330,7 +330,7 @@ export default function BloggerDashboardPage() {
         <div className="mt-8 bg-primary/5 rounded-xl p-6">
           <h3 className="font-semibold text-primary mb-3">💡 佣金说明</h3>
           <ul className="text-sm text-gray-700 space-y-2">
-            <li>• 佣金比例：{(stats?.commission_rate * 100 || 10).toFixed(0)}%（由平台设定）</li>
+            <li>• 佣金比例：{((stats?.commission_rate ?? 0.1) * 100).toFixed(0)}%（由平台设定）</li>
             <li>• 佣金 = 订单金额 × 佣金比例 × (1 - 15%平台服务费)</li>
             <li>• 订单确认后，佣金进入待结算状态</li>
             <li>• 每月1日结算上月佣金，支付至您登记的收款方式</li>

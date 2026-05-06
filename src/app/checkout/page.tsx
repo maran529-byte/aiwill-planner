@@ -47,7 +47,7 @@ function CheckoutContent() {
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-2xl md:text-3xl font-bold text-center mb-2">选择您的方案</h1>
-        <p className="text-gray-600 text-center mb-12">专业、可信赖的遗嘱规划服务</p>
+        <p className="text-gray-600 text-center mb-12">专业、可信赖的人生规划服务</p>
 
         <div className="grid md:grid-cols-3 gap-4 md:gap-8">
           {PRICING_TIERS.map((tier) => (

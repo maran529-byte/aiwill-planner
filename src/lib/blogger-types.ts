@@ -94,5 +94,5 @@ export const COMMISSION_RATE_RANGE = {
 export const TIER_COMMISSION = {
   'limited': { rate: 0.08, name: '限时活动版' },
   'ai-only': { rate: 0.10, name: 'AI专属版' },
-  'ai-lawyer': { rate: 0.12, name: '律师护航版' },
+  'ai-lawyer': { rate: 0.12, name: '专家护航版' },
 } as const

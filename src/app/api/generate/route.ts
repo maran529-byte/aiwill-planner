@@ -82,15 +82,15 @@ function calculateComplexity(answers: GenerateRequest): number {
 
 function getComplexityLevel(score: number) {
   if (score < 30) return { level: '简单', description: '资产清晰，继承人明确' }
-  if (score < 60) return { level: '中等', description: '有一定复杂性，建议律师审核' }
+  if (score < 60) return { level: '中等', description: '有一定复杂性，建议专业团队审核' }
   if (score < 80) return { level: '复杂', description: '涉及多方利益，需要专业指导' }
-  return { level: '高度复杂', description: '强烈建议选择律师全程服务' }
+  return { level: '高度复杂', description: '强烈建议选择专家全程服务' }
 }
 
 function suggestTier(score: number) {
   if (score < 30) return { tier: 'ai-only', name: 'AI专属版' }
-  if (score < 60) return { tier: 'ai-lawyer', name: '律师护航版' }
-  return { tier: 'ai-lawyer', name: '律师护航版' }
+  if (score < 60) return { tier: 'ai-lawyer', name: '专家护航版' }
+  return { tier: 'ai-lawyer', name: '专家护航版' }
 }
 
 function getMockLawyerProfile(tier: string) {
@@ -102,9 +102,9 @@ function getMockLawyerProfile(tier: string) {
       available: true,
     },
     'ai-lawyer': {
-      name: '张律师',
-      title: '资深婚姻继承律师',
-      firm: '北京正义律师事务所',
+      name: '张专家',
+      title: '资深婚姻继承专家',
+      firm: '北京专业服务中心',
       experience: '15年执业经验',
       cases: '处理继承案件500+',
       rating: 4.9,
@@ -166,14 +166,14 @@ async function generateWithMiniMax(prompt: string): Promise<string> {
       messages: [
         {
           role: 'system',
-          content: `你是一位专业的中国继承法律师。请根据用户提供的遗嘱规划信息，生成一份专业、严谨的遗嘱草案。
+          content: `你是一位专业的中国继承安排专家。请根据用户提供的规划信息，生成一份专业、严谨的草案。
 
 要求：
 1. 严格遵循《中华人民共和国民法典》继承编相关规定
 2. 语言正式、规范，体现法律文件的严肃性
 3. 结构清晰，涵盖：前言、财产状况、继承人安排、特殊安排、遗赠条件、附则等
 4. 对复杂情况给出专业建议
-5. 末尾注明"本遗嘱仅供参考，实际法律效力需经公证机构公证或律师审核确认"
+5. 末尾注明"本草案仅供参考，实际效力需经公证机构公证或专业团队审核确认"
 6. 用中文回复，使用中文标点符号`
         },
         {
@@ -279,7 +279,7 @@ ${answers.trust === '有' ? `关于家族信托：${answers.trustDetails || '详
 
 ---
 
-**声明**：本遗嘱草案仅供参考，实际法律效力需经公证机构公证或律师审核确认。
+**声明**：本草案仅供参考，实际效力需经公证机构公证或专业团队审核确认。
 
 立遗嘱人：___________
 日期：___________`

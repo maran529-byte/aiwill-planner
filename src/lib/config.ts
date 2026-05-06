@@ -34,15 +34,15 @@ export const PRICING_TIERS = [
   },
   {
     id: 'ai-lawyer',
-    name: '律师护航版',
+    name: '专业护航版',
     price: 699,
-    description: 'AI+律师专业审核',
+    description: 'AI+专业团队审核',
     recommended: true,
     features: [
       'AI智能问卷全程引导',
-      '专业律师审核修订',
-      '法律效力保障',
-      '优先预约律师',
+      '专业团队审核修订',
+      '文书效力保障',
+      '优先预约专业咨询',
     ],
   },
 
@@ -58,7 +58,7 @@ export const DOCUMENT_TYPES = [
   { id: 'division', name: '分家协议', icon: '🏡' },
   { id: 'estate', name: '遗赠扶养协议', icon: '🧓' },
   { id: 'guardianship', name: '意定监护', icon: '🛡️' },
-  { id: 'will', name: '遗嘱', icon: '📜' },
+      { id: 'will', name: '财产传承安排', icon: '📜' },
 ];
 
 // Platform Fee

@@ -46,10 +46,10 @@ function DouyinLandingContent() {
         <div className="max-w-2xl mx-auto px-4 text-center">
           <p className="text-white/90 text-lg">来自 @{bloggerName} 的推荐</p>
           <h1 className="text-2xl md:text-3xl font-bold text-white mt-2">
-            遗嘱，不是告别，是爱的延续
+            遗赠，不是告别，是爱的延续
           </h1>
           <p className="text-white/80 mt-2">
-            从婚前协议到遗嘱，9类文书守护家庭全生命周期
+            从婚前协议到遗赠，9类文书守护家庭全生命周期
           </p>
         </div>
       </section>
@@ -63,8 +63,8 @@ function DouyinLandingContent() {
               30分钟，为家人留下确定的爱
             </h2>
             <p className="text-gray-600 mb-6">
-              AI智能引导，专业律师审核，让您的每一份心意<br />
-              都变成具有法律效力的文书
+              AI智能引导，专业团队审核，让您的每一份心意<br />
+              都有机会得到专业团队的指导
             </p>
 
             {discountNote && (
@@ -81,14 +81,14 @@ function DouyinLandingContent() {
             </button>
 
             <p className="text-sm text-gray-500">
-              已有 12,847 位用户 · 9类文书类型 · 24h律师审核
+              已有 12,847 位用户 · 9类文书类型 · 专业团队支持
             </p>
           </div>
 
           {/* 9大文书展示 */}
           <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
             <h3 className="text-lg font-bold text-primary mb-4 text-center">
-              覆盖家庭全生命周期的法律文书
+              覆盖家庭全生命周期的文书规划
             </h3>
             <div className="grid grid-cols-3 gap-3">
               {[
@@ -100,7 +100,7 @@ function DouyinLandingContent() {
                 { icon: '🏢', name: '分家析产协议', stage: '家族财产规划' },
                 { icon: '🧓', name: '遗赠扶养协议', stage: '中老年刚需' },
                 { icon: '🛡️', name: '意定监护协议', stage: '新刚需场景' },
-                { icon: '📜', name: '遗嘱', stage: '人生终极规划' },
+                { icon: '📜', name: '遗赠扶养协议', stage: '人生终极规划' },
               ].map((doc) => (
                 <div key={doc.name} className="flex flex-col items-center p-3 bg-cream rounded-xl">
                   <span className="text-2xl mb-1">{doc.icon}</span>
@@ -132,8 +132,8 @@ function DouyinLandingContent() {
                 <div className="flex items-center gap-2">
                   <span className="text-lg">⚖️</span>
                   <div>
-                    <p className="font-medium text-primary">律师护航版</p>
-                    <p className="text-xs text-gray-500">AI+24h律师审核</p>
+                    <p className="font-medium text-primary">专家护航版</p>
+                    <p className="text-xs text-gray-500">AI+专业团队支持</p>
                   </div>
                 </div>
                 <div className="text-right">

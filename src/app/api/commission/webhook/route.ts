@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { BloggerDB } from '@/lib/blogger-db'
+import { bloggerDB } from '@/lib/blogger-db'
 
-const db = new BloggerDB()
+const db = bloggerDB
 
 // POST /api/commission/webhook - 触发博主佣金通知
 // 接收订单数据，查找对应博主，发送飞书/企微通知
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 获取博主信息
-    const blogger = db.getBlogger(blogger_id)
+    const blogger = await db.getBloggerById(blogger_id)
     if (!blogger) {
       return NextResponse.json({ error: 'Blogger not found' }, { status: 404 })
     }
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const tierNames: Record<string, string> = {
       'limited': '基础版（¥29.9）',
       'ai-only': 'AI专属版（¥199）',
-      'ai-lawyer': 'AI律师版（¥699）',
+      'ai-lawyer': 'AI专家版（¥699）',
     }
 
     const tierName = tierNames[tier_id] || tier_id
