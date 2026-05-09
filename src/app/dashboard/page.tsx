@@ -127,7 +127,7 @@ export default function DashboardPage() {
             <h2 className="text-xl font-semibold text-primary mb-2">支付记录</h2>
             <p className="text-gray-600 mb-4">查看您的购买记录和订阅信息。</p>
             <button
-                onClick={() => router.push('/checkout')}
+                onClick={() => router.push('/orders')}
                 className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
               >
                 查看记录

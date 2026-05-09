@@ -33,15 +33,15 @@ const RESULT_PATHS: Record<DocumentType, string> = {
 }
 
 const API_PATHS: Record<DocumentType, string> = {
-  prenup: '/api/generate/prenup',
-  marital: '/api/generate/marital',
-  divorce: '/api/generate/divorce',
-  custody: '/api/generate/custody',
-  guardianship: '/api/generate/guardianship',
-  donation: '/api/generate/donation',
-  estate: '/api/generate/estate',
-  will: '/api/generate/will',
-  division: '/api/generate/division',
+  prenup: '/api/generate',
+  marital: '/api/generate',
+  divorce: '/api/generate',
+  custody: '/api/generate',
+  guardianship: '/api/generate',
+  donation: '/api/generate',
+  estate: '/api/generate',
+  will: '/api/generate',
+  division: '/api/generate',
 }
 
 function getDocumentType(param: string | null): DocumentType {
@@ -89,7 +89,7 @@ function QuestionnaireContent() {
 
   const allVisibleQuestions = questions.filter(q => !shouldSkipQuestion(q, answers))
   const answeredCount = Object.keys(answers).filter(k => answers[k] !== '' && answers[k] !== undefined).length
-  const totalProgress = allVisibleQuestions.length > 0 ? Math.round((answeredCount / allVisibleQuestions.length) * 100) : 0
+  const totalProgress = allVisibleQuestions.length > 0 ? Math.min(100, Math.round((answeredCount / allVisibleQuestions.length) * 100)) : 0
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEYS[docType])
@@ -166,6 +166,8 @@ function QuestionnaireContent() {
         body: JSON.stringify({ answers, docType, attribution, orderClaimId }),
       })
       if (res.ok) {
+        const data = await res.json()
+        localStorage.setItem(`${docType}_result`, JSON.stringify(data))
         localStorage.removeItem(STORAGE_KEYS[docType])
         localStorage.removeItem(ATTRIBUTION_KEY)
         router.push(RESULT_PATHS[docType])

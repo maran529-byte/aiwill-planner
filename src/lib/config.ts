@@ -11,7 +11,6 @@ export const PRICING_TIERS = [
     tagline: '限首次体验',
     price: 29.9,
     description: '9类文书均可使用，限时特惠',
-    recommended: true,
     features: [
       '9类文书任选',
       'AI智能问卷引导',

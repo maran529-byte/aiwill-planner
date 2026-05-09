@@ -6,8 +6,8 @@ import Link from 'next/link'
 import { jsPDF } from 'jspdf'
 import { PRICING_TIERS } from '@/lib/config'
 
-interface WillResult {
-  willDraft: string
+interface GenerateResult {
+  draft: string
   complexity: {
     score: number
     level: string
@@ -28,10 +28,24 @@ interface WillResult {
     nextAvailable?: string
   }
   generatedAt: string
+  apiUsed?: boolean
 }
 
-export default function ResultPage() {
-  const [result, setResult] = useState<WillResult | null>(null)
+const DOC_TYPE_NAMES: Record<string, string> = {
+  will: '遗嘱',
+  prenup: '婚前协议',
+  marital: '婚内财产约定',
+  divorce: '离婚协议',
+  custody: '抚养权协议',
+  guardianship: '意定监护',
+  donation: '财产赠与',
+  estate: '遗赠扶养',
+  division: '分家析产',
+}
+
+export default function ResultPage({ searchParams }: { searchParams: { type?: string } }) {
+  const docType = searchParams.type || 'will'
+  const [result, setResult] = useState<GenerateResult | null>(null)
   const [showContactForm, setShowContactForm] = useState(false)
   const [contactForm, setContactForm] = useState({
     name: '',
@@ -43,7 +57,7 @@ export default function ResultPage() {
   const router = useRouter()
 
   useEffect(() => {
-    const saved = localStorage.getItem('will_result')
+    const saved = localStorage.getItem(`${docType}_result`)
     if (saved) {
       try {
         setResult(JSON.parse(saved))
@@ -51,7 +65,7 @@ export default function ResultPage() {
         console.error('Failed to load result')
       }
     }
-  }, [])
+  }, [docType])
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -65,12 +79,13 @@ export default function ResultPage() {
   const handleDownload = () => {
     if (!result) return
 
+    const docTypeName = DOC_TYPE_NAMES[docType] || '规划文书'
     // Create PDF with proper Chinese font support
     const doc = new jsPDF()
 
     // Add title
     doc.setFontSize(20)
-    doc.text('规划文书', 105, 20, { align: 'center' })
+    doc.text(docTypeName, 105, 20, { align: 'center' })
 
     // Add date
     doc.setFontSize(10)
@@ -79,9 +94,9 @@ export default function ResultPage() {
     // Add horizontal line
     doc.line(20, 32, 190, 32)
 
-    // Add will draft content with word wrap
+    // Add draft content with word wrap
     doc.setFontSize(11)
-    const lines = doc.splitTextToSize(result.willDraft, 170)
+    const lines = doc.splitTextToSize(result.draft, 170)
     let yPos = 40
 
     lines.forEach((line: string) => {
@@ -96,10 +111,10 @@ export default function ResultPage() {
     // Add footer on last page
     doc.setFontSize(9)
     doc.setTextColor(128)
-    doc.text('本规划文书仅供参考，具体安排请咨询专业顾问。', 105, 285, { align: 'center' })
+    doc.text(`本${DOC_TYPE_NAMES[docType] || '文书'}仅供参考，具体安排请咨询专业顾问。`, 105, 285, { align: 'center' })
 
     // Save the PDF
-    doc.save(`规划文书_${new Date().toISOString().split('T')[0]}.pdf`)
+    doc.save(`${DOC_TYPE_NAMES[docType] || '规划文书'}_${new Date().toISOString().split('T')[0]}.pdf`)
   }
 
   if (!result) {
@@ -134,7 +149,7 @@ export default function ResultPage() {
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* Success Banner */}
         <div className="bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl p-6 mb-8 text-center">
-          <h1 className="text-xl md:text-2xl font-bold mb-2">🎉 您的规划文书已生成</h1>
+          <h1 className="text-xl md:text-2xl font-bold mb-2">🎉 您的{DOC_TYPE_NAMES[docType] || '规划文书'}已生成</h1>
           <p className="text-white/80">生成时间：{new Date(result.generatedAt).toLocaleString('zh-CN')}</p>
         </div>
 
@@ -143,11 +158,11 @@ export default function ResultPage() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="bg-primary/5 px-6 py-4 border-b">
-                <h2 className="text-lg font-bold text-primary">📄 规划文书</h2>
+                <h2 className="text-lg font-bold text-primary">📄 {DOC_TYPE_NAMES[docType] || '规划文书'}</h2>
               </div>
               <div className="p-6">
                 <pre className="whitespace-pre-wrap font-sans text-gray-700 text-sm leading-relaxed">
-                  {result.willDraft}
+                  {result.draft}
                 </pre>
               </div>
               <div className="px-6 py-4 bg-gray-50 border-t flex gap-4">

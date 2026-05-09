@@ -1,9 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 import { PRICING_TIERS } from '@/lib/config'
 
 export default function HomePage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -22,46 +25,83 @@ export default function HomePage() {
             <a href="#testimonials" className="text-gray-600 hover:text-primary transition">用户评价</a>
             <Link href="/auth" className="text-primary hover:text-primary/80 transition font-medium">登录/注册</Link>
           </nav>
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden p-2 text-gray-600 hover:text-primary"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="菜单"
+          >
+            {mobileMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
         </div>
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4">
+            <nav className="flex flex-col gap-3">
+              <a href="#document-types" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>文书类型</a>
+              <a href="#features" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>功能介绍</a>
+              <a href="#pricing" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>价格方案</a>
+              <a href="#testimonials" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>用户评价</a>
+              <Link href="/auth" className="text-primary hover:text-primary/80 transition font-medium py-2 border-t border-gray-100 mt-2" onClick={() => setMobileMenuOpen(false)}>登录/注册</Link>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
-      <section className="hero-pattern py-20 md:py-32">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-primary mb-6 leading-tight">
-            家庭全生命周期的<br className="md:hidden" />
-            财产与身份规划
-          </h1>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            从婚前协议到财产传承安排，9类高频文书一站搞定。<br />
-            AI智能引导，30分钟完成人生重要规划。
-          </p>
+      <section className="hero-pattern py-20 md:py-28">
+        <div className="max-w-5xl mx-auto px-4">
+          {/* 情感标题 */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-primary mb-6 leading-tight">
+              为挚爱，<br className="md:hidden" />
+              <span className="text-accent">提前做好</span>人生规划
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              从相濡以沫到儿孙满堂，每个重要时刻都值得认真对待<br />
+              9类高频文书，AI智能引导，30分钟守护您的爱与责任
+            </p>
+          </div>
+
+          {/* 生命阶段卡片 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
+            {[
+              { emoji: '💍', title: '步入婚姻', desc: '明确财产归属', sub: '婚前协议', color: 'bg-pink-50 border-pink-200' },
+              { emoji: '🏠', title: '共同生活', desc: '约定财产管理', sub: '婚内约定', color: 'bg-blue-50 border-blue-200' },
+              { emoji: '👶', title: '迎接新生', desc: '明确抚养安排', sub: '抚养协议', color: 'bg-amber-50 border-amber-200' },
+              { emoji: '🧓', title: '安享晚年', desc: '传承与照护', sub: '遗赠协议', color: 'bg-emerald-50 border-emerald-200' },
+            ].map((stage, i) => (
+              <a
+                key={i}
+                href="#document-types"
+                className={`${stage.color} border-2 rounded-2xl p-5 text-center hover:scale-105 transition-transform cursor-pointer group`}
+              >
+                <div className="text-4xl mb-3">{stage.emoji}</div>
+                <h3 className="font-bold text-primary text-lg mb-1">{stage.title}</h3>
+                <p className="text-gray-600 text-sm mb-2">{stage.desc}</p>
+                <span className="text-xs font-medium text-accent bg-white/60 px-2 py-1 rounded-full">{stage.sub}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* 底部CTA */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <select
-              id="doc-type-select"
-              className="btn-primary text-lg px-6 py-4 pr-10 appearance-none cursor-pointer min-w-[200px]"
-              defaultValue=""
-              onChange={(e) => {
-                const val = (e.target as HTMLSelectElement).value;
-                if (val) window.location.href = `/questionnaire?type=${val}`;
-              }}
-            >
-              <option value="" disabled>选择文书类型</option>
-              <option value="prenup">💍 婚前协议</option>
-              <option value="marital">🏠 婚内财产约定</option>
-              <option value="donation">🎁 财产赠与协议</option>
-              <option value="custody">👶 抚养权/抚养费协议</option>
-              <option value="divorce">📋 离婚协议</option>
-              <option value="division">🏢 分家析产协议</option>
-              <option value="estate">🧓 遗赠扶养协议</option>
-              <option value="guardianship">🛡️ 意定监护协议</option>
-              <option value="will">📜 财产传承安排</option>
-            </select>
+            <a href="#document-types" className="btn-primary text-lg px-8 py-4">
+              立即规划 · 3分钟开始
+            </a>
             <a href="#pricing" className="btn-secondary text-lg px-8 py-4">
-              了解价格
+              了解价格方案
             </a>
           </div>
-          <p className="mt-6 text-sm text-gray-500">已有 12,847 位用户 · 9类文书类型 · 24h专业审核</p>
+          <p className="mt-6 text-sm text-gray-500 text-center">已有 12,847 位用户信赖 · 9类文书类型 · 24h专业审核</p>
         </div>
       </section>
 
@@ -285,6 +325,64 @@ export default function HomePage() {
                   立即选择
                 </Link>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Signals */}
+      <section className="py-12 bg-cream/50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-primary mb-1">12,847</div>
+              <div className="text-sm text-gray-500">用户信赖之选</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-primary mb-1">99.2%</div>
+              <div className="text-sm text-gray-500">用户满意度</div>
+            </div>
+            <div>
+              <div className="text-3xl mb-1 flex items-center justify-center gap-1">
+                <span className="text-primary">🔒</span>
+                <span className="text-primary font-bold">AES-256</span>
+              </div>
+              <div className="text-sm text-gray-500">银行级数据加密</div>
+            </div>
+            <div>
+              <div className="text-3xl mb-1 flex items-center justify-center gap-1">
+                <span className="text-primary">🛡️</span>
+                <span className="text-primary font-bold">ISO</span>
+              </div>
+              <div className="text-sm text-gray-500">信息安全认证</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-12">
+            常见问题
+          </h2>
+          <div className="space-y-4">
+            {[
+              { q: '文书生成需要多长时间？', a: '通常3-5分钟即可完成。复杂场景（如有多处房产、多名继承人）可能需要10-15分钟。' },
+              { q: '我可以修改生成的文书吗？', a: '可以。生成后可在线编辑，如需大幅调整可重新生成，所有操作记录保存30天。' },
+              { q: '我的信息是否安全？', a: '采用AES-256银行级加密，所有数据传输使用HTTPS协议，我们承诺不会将您的信息泄露给任何第三方。' },
+              { q: '专业团队审核包含什么服务？', a: '由资深规划师逐字审核文书内容，确保条款清晰、合法、有效，并提供一项修改服务。' },
+              { q: '如何联系客服？', a: '可通过页面右下角聊天窗口联系我们，或发送邮件至 support@aiwill-planner.cn，工作时间内1小时内回复。' },
+            ].map((item, i) => (
+              <details key={i} className="group bg-white rounded-xl shadow-sm border border-gray-100">
+                <summary className="flex items-center justify-between cursor-pointer p-5 font-medium text-primary hover:text-accent transition">
+                  {item.q}
+                  <span className="ml-4 flex-shrink-0 text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="px-5 pb-5 text-gray-600">
+                  {item.a}
+                </div>
+              </details>
             ))}
           </div>
         </div>
