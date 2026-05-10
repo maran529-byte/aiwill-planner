@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import BloggerForm, { BloggerFormData } from './BloggerForm'
 
 interface Blogger {
   id: string
@@ -185,9 +186,8 @@ export default function BloggersAdminPage() {
     setShowAddModal(true)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!formData.douyin_id || !formData.name || !formData.category) {
+  const handleSubmit = async (data: BloggerFormData) => {
+    if (!data.douyin_id || !data.name || !data.category) {
       alert('请填写必填项')
       return
     }
@@ -195,9 +195,9 @@ export default function BloggersAdminPage() {
     setActionLoading(true)
     try {
       const payload = {
-        ...formData,
-        followers: Number(formData.followers) || 0,
-        commission_rate: Number(formData.commission_rate) / 100,
+        ...data,
+        followers: Number(data.followers) || 0,
+        commission_rate: Number(data.commission_rate) / 100,
       }
 
       let res
@@ -474,200 +474,14 @@ export default function BloggersAdminPage() {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    抖音号 <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.douyin_id}
-                    onChange={e => setFormData({ ...formData, douyin_id: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="例如: love_story_2024"
-                    disabled={!!editingBlogger}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    博主名称 <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={e => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="输入博主名称"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">头像URL</label>
-                  <input
-                    type="text"
-                    value={formData.avatar}
-                    onChange={e => setFormData({ ...formData, avatar: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="https://..."
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    粉丝数 <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.followers}
-                    onChange={e => setFormData({ ...formData, followers: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="例如: 50000"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    内容类别 <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={formData.category}
-                    onChange={e => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    required
-                  >
-                    <option value="">选择类别</option>
-                    {CATEGORY_OPTIONS.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">佣金比例 (%)</label>
-                  <input
-                    type="number"
-                    value={formData.commission_rate}
-                    onChange={e => setFormData({ ...formData, commission_rate: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="5-20之间"
-                    min="5"
-                    max="20"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">微信</label>
-                  <input
-                    type="text"
-                    value={formData.contact_wechat}
-                    onChange={e => setFormData({ ...formData, contact_wechat: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="微信号"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">手机号</label>
-                  <input
-                    type="tel"
-                    value={formData.contact_phone}
-                    onChange={e => setFormData({ ...formData, contact_phone: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="手机号码"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
-                  <input
-                    type="email"
-                    value={formData.contact_email}
-                    onChange={e => setFormData({ ...formData, contact_email: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="email@example.com"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">合作方式</label>
-                  <select
-                    value={formData.fee_type}
-                    onChange={e => setFormData({ ...formData, fee_type: e.target.value as any })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                  >
-                    <option value="cps">CPS分润</option>
-                    <option value="fixed">固定费用</option>
-                    <option value="hybrid">混合模式</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Webhook类型</label>
-                  <select
-                    value={formData.webhook_type}
-                    onChange={e => setFormData({ ...formData, webhook_type: e.target.value as any })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                  >
-                    <option value="none">不使用</option>
-                    <option value="feishu">飞书</option>
-                    <option value="wecom">企业微信</option>
-                  </select>
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Webhook地址</label>
-                  <input
-                    type="url"
-                    value={formData.webhook_url}
-                    onChange={e => setFormData({ ...formData, webhook_url: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    placeholder="https://..."
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">简介</label>
-                  <textarea
-                    value={formData.bio}
-                    onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    rows={2}
-                    placeholder="博主简介..."
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">备注</label>
-                  <textarea
-                    value={formData.note}
-                    onChange={e => setFormData({ ...formData, note: e.target.value })}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-primary"
-                    rows={2}
-                    placeholder="备注信息..."
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
-                <button
-                  type="button"
-                  onClick={() => { setShowAddModal(false); resetForm(); }}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
-                >
-                  取消
-                </button>
-                <button
-                  type="submit"
-                  disabled={actionLoading}
-                  className="px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 disabled:opacity-50"
-                >
-                  {actionLoading ? '保存中...' : '保存'}
-                </button>
-              </div>
-            </form>
+            <div className="p-6">
+              <BloggerForm
+                blogger={editingBlogger}
+                onSubmit={handleSubmit}
+                onCancel={() => { setShowAddModal(false); resetForm(); }}
+                actionLoading={actionLoading}
+              />
+            </div>
           </div>
         </div>
       )}
