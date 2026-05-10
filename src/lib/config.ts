@@ -7,8 +7,9 @@ export const MINIMAX_MODEL = process.env.MINIMAX_MODEL || 'MiniMax-M2';
 export const PRICING_TIERS = [
   {
     id: 'limited',
-    name: '限时活动版',
-    tagline: '限首次体验',
+    name: 'AI体验版',
+    tagline: '快速入门',
+    originalPrice: 49,
     price: 29.9,
     description: '9类文书均可使用，限时特惠',
     features: [
@@ -17,11 +18,13 @@ export const PRICING_TIERS = [
       '生成专属文书草稿',
       'PDF下载',
     ],
+    cta: '立即体验',
   },
   {
     id: 'ai-only',
-    name: 'AI专属版',
+    name: '专业版',
     tagline: '30分钟，AI帮您完成规划',
+    originalPrice: 299,
     price: 199,
     description: 'AI智能生成文书草稿',
     features: [
@@ -30,19 +33,23 @@ export const PRICING_TIERS = [
       '永久保存，随时修改',
       'PDF下载',
     ],
+    cta: '选择专业版',
   },
   {
     id: 'ai-lawyer',
-    name: '专业护航版',
+    name: '尊享护航版',
+    tagline: '专家1对1审核',
+    originalPrice: 999,
     price: 699,
-    description: 'AI+专业团队审核',
+    description: 'AI+专家审核签署',
     recommended: true,
     features: [
       'AI智能问卷全程引导',
-      '专业团队审核修订',
+      '专家视频审核',
       '文书效力保障',
-      '优先预约专业咨询',
+      '30天修改有效期',
     ],
+    cta: '选择尊享护航版',
   },
 
 ];

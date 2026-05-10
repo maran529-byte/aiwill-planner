@@ -441,7 +441,13 @@ ${prompt}
   }
 
   const data = await response.json()
-  return data.choices?.[0]?.message?.content || data.message?.content || ''
+  // MiniMax returns content as array: [{type:'thinking'},{type:'text',text:'...'}]
+  const content = data.content
+  if (Array.isArray(content)) {
+    const textBlock = content.find((b: any) => b.type === 'text')
+    return textBlock?.text || ''
+  }
+  return typeof content === 'string' ? content : data.choices?.[0]?.message?.content || ''
 }
 
 // ============================================================

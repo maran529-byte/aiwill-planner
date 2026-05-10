@@ -283,28 +283,53 @@ export default function HomePage() {
       {/* Pricing Section */}
       <section id="pricing" className="py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-4">
-            选择适合您的方案
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            无论您需求如何，都能找到合适的解决方案
-          </p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+              选择适合您的方案
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              超12,847个家庭已为至爱做出妥善安排，您也可以
+            </p>
+          </div>
+
+          {/* Social proof strip */}
+          <div className="flex items-center justify-center gap-6 mb-10 text-sm text-gray-500">
+            <span className="flex items-center gap-1">⭐⭐⭐⭐⭐ <span className="text-primary font-medium">4.9/5</span> 评分</span>
+            <span>•</span>
+            <span>30天无理由退款</span>
+            <span>•</span>
+            <span>1对1客服支持</span>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
             {PRICING_TIERS.map((tier) => (
               <div
                 key={tier.id}
-                className={`pricing-card ${tier.recommended ? 'pricing-card-recommended' : ''}`}
+                className={`pricing-card relative ${tier.recommended ? 'pricing-card-recommended scale-[1.03]' : ''}`}
               >
                 {tier.recommended && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-white px-4 py-1 rounded-full text-sm font-medium">
-                    推荐方案
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-white px-4 py-1 rounded-full text-sm font-medium z-10">
+                    ⭐ 最受欢迎
                   </div>
                 )}
-                <h3 className="text-2xl font-bold text-primary mb-2">{tier.name}</h3>
-                <p className="text-gray-600 mb-4">{tier.description}</p>
-                <div className="mb-6">
+                <div className="text-center mb-4">
+                  <h3 className="text-2xl font-bold text-primary">{tier.name}</h3>
+                  {tier.tagline && (
+                    <p className="text-sm text-gray-500 mt-1">{tier.tagline}</p>
+                  )}
+                </div>
+                <p className="text-gray-600 text-center mb-4 text-sm">{tier.description}</p>
+                <div className="text-center mb-6">
+                  {tier.originalPrice && (
+                    <span className="text-gray-400 line-through text-lg mr-2">¥{tier.originalPrice}</span>
+                  )}
                   <span className="text-4xl font-bold text-primary">¥{tier.price}</span>
                   <span className="text-gray-500">/次</span>
+                  {tier.originalPrice && (
+                    <div className="text-xs text-green-600 mt-1">
+                      节省 ¥{tier.originalPrice - tier.price}
+                    </div>
+                  )}
                 </div>
                 <ul className="space-y-3 mb-8">
                   {tier.features.map((feature, idx) => (
@@ -322,10 +347,30 @@ export default function HomePage() {
                       : 'bg-primary text-white hover:opacity-90'
                   }`}
                 >
-                  立即选择
+                  {tier.cta || '立即选择'}
                 </Link>
               </div>
             ))}
+          </div>
+
+          {/* Trust badges */}
+          <div className="flex items-center justify-center gap-8 mt-12 pt-8 border-t border-gray-100">
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <span className="text-lg">🔒</span>
+              <span>AES-256加密</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <span className="text-lg">🛡️</span>
+              <span>信息安全认证</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <span className="text-lg">⚖️</span>
+              <span>专家审核</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <span className="text-lg">📱</span>
+              <span>移动端适配</span>
+            </div>
           </div>
         </div>
       </section>
