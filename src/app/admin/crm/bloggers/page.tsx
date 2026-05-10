@@ -54,7 +54,12 @@ export default function BloggersAdminPage() {
   const [actionLoading, setActionLoading] = useState(false)
 
   // 表单状态
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    douyin_id: string; name: string; avatar: string; bio: string; followers: string;
+    category: string; commission_rate: string; contact_wechat: string; contact_phone: string;
+    contact_email: string; fee_type: 'cps' | 'fixed' | 'hybrid';
+    webhook_url: string; webhook_type: 'feishu' | 'wecom' | 'none'; note: string;
+  }>({
     douyin_id: '',
     name: '',
     avatar: '',
@@ -65,9 +70,9 @@ export default function BloggersAdminPage() {
     contact_wechat: '',
     contact_phone: '',
     contact_email: '',
-    fee_type: 'cps' as const,
+    fee_type: 'cps',
     webhook_url: '',
-    webhook_type: 'none' as const,
+    webhook_type: 'none',
     note: '',
   })
 
@@ -171,10 +176,10 @@ export default function BloggersAdminPage() {
       contact_wechat: blogger.contact_wechat || '',
       contact_phone: blogger.contact_phone || '',
       contact_email: blogger.contact_email || '',
-      fee_type: blogger.fee_type,
+      fee_type: blogger.fee_type as 'cps' | 'fixed' | 'hybrid',
       webhook_url: blogger.webhook_url || '',
-      webhook_type: blogger.webhook_type,
-      note: blogger.note || '',
+      webhook_type: blogger.webhook_type as 'feishu' | 'wecom' | 'none',
+      note: '',
     })
     setEditingBlogger(blogger)
     setShowAddModal(true)
