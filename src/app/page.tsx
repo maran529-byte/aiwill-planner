@@ -10,17 +10,17 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm z-50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center shadow-lg">
               <span className="text-white text-xl">💝</span>
             </div>
             <span className="text-xl font-bold text-primary">爱的延续</span>
           </div>
           <nav className="hidden md:flex gap-6 items-center">
             <a href="#document-types" className="text-gray-600 hover:text-primary transition">文书类型</a>
-            <a href="#features" className="text-gray-600 hover:text-primary transition">功能介绍</a>
+            <a href="#how-it-works" className="text-gray-600 hover:text-primary transition">如何使用</a>
             <a href="#pricing" className="text-gray-600 hover:text-primary transition">价格方案</a>
             <a href="#testimonials" className="text-gray-600 hover:text-primary transition">用户评价</a>
             <Link href="/auth" className="text-primary hover:text-primary/80 transition font-medium">登录/注册</Link>
@@ -47,7 +47,7 @@ export default function HomePage() {
           <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4">
             <nav className="flex flex-col gap-3">
               <a href="#document-types" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>文书类型</a>
-              <a href="#features" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>功能介绍</a>
+              <a href="#how-it-works" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>如何使用</a>
               <a href="#pricing" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>价格方案</a>
               <a href="#testimonials" className="text-gray-600 hover:text-primary transition py-2" onClick={() => setMobileMenuOpen(false)}>用户评价</a>
               <Link href="/auth" className="text-primary hover:text-primary/80 transition font-medium py-2 border-t border-gray-100 mt-2" onClick={() => setMobileMenuOpen(false)}>登录/注册</Link>
@@ -57,34 +57,53 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="hero-pattern py-20 md:py-28">
-        <div className="max-w-5xl mx-auto px-4">
-          {/* 情感标题 */}
-          <div className="text-center mb-16">
+      <section className="hero-gradient min-h-screen flex items-center pt-20 pb-16 md:pt-24 md:pb-20">
+        <div className="max-w-6xl mx-auto px-4 w-full">
+          {/* Trust badges top */}
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-10 animate-fade-in">
+            {[
+              { icon: '🔒', text: 'AES-256加密' },
+              { icon: '🛡️', text: '信息安全认证' },
+              { icon: '⚖️', text: '专业律师审核' },
+              { icon: '📱', text: '移动端适配' },
+            ].map((badge, i) => (
+              <div key={i} className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+                <span className="text-lg">{badge.icon}</span>
+                <span className="text-sm font-medium text-primary">{badge.text}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Main hero content */}
+          <div className="text-center mb-12 animate-slide-up">
+            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+              已有 12,847 个家庭选择信赖
+            </div>
             <h1 className="text-4xl md:text-6xl font-bold text-primary mb-6 leading-tight">
               为挚爱，<br className="md:hidden" />
-              <span className="text-accent">提前做好</span>人生规划
+              <span className="text-gradient">提前做好</span>人生规划
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
               从相濡以沫到儿孙满堂，每个重要时刻都值得认真对待<br />
-              9类高频文书，AI智能引导，30分钟守护您的爱与责任
+              <strong className="text-primary">9类高频文书</strong>，AI智能引导，<strong className="text-primary">30分钟</strong>守护您的爱与责任
             </p>
           </div>
 
-          {/* 生命阶段卡片 */}
+          {/* Life stage cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
             {[
-              { emoji: '💍', title: '步入婚姻', desc: '明确财产归属', sub: '婚前协议', color: 'bg-pink-50 border-pink-200' },
-              { emoji: '🏠', title: '共同生活', desc: '约定财产管理', sub: '婚内约定', color: 'bg-blue-50 border-blue-200' },
-              { emoji: '👶', title: '迎接新生', desc: '明确抚养安排', sub: '抚养协议', color: 'bg-amber-50 border-amber-200' },
-              { emoji: '🧓', title: '安享晚年', desc: '传承与照护', sub: '遗赠协议', color: 'bg-emerald-50 border-emerald-200' },
+              { emoji: '💍', title: '步入婚姻', desc: '明确财产归属', sub: '婚前协议', color: 'bg-rose-50 border-rose-200 hover:border-rose-400' },
+              { emoji: '🏠', title: '共同生活', desc: '约定财产管理', sub: '婚内约定', color: 'bg-blue-50 border-blue-200 hover:border-blue-400' },
+              { emoji: '👶', title: '迎接新生', desc: '明确抚养安排', sub: '抚养协议', color: 'bg-amber-50 border-amber-200 hover:border-amber-400' },
+              { emoji: '🧓', title: '安享晚年', desc: '传承与照护', sub: '遗赠协议', color: 'bg-emerald-50 border-emerald-200 hover:border-emerald-400' },
             ].map((stage, i) => (
               <a
                 key={i}
                 href="#document-types"
-                className={`${stage.color} border-2 rounded-2xl p-5 text-center hover:scale-105 transition-transform cursor-pointer group`}
+                className={`${stage.color} border-2 rounded-2xl p-5 text-center hover:scale-105 hover:shadow-lg transition-all duration-300 cursor-pointer group`}
               >
-                <div className="text-4xl mb-3">{stage.emoji}</div>
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">{stage.emoji}</div>
                 <h3 className="font-bold text-primary text-lg mb-1">{stage.title}</h3>
                 <p className="text-gray-600 text-sm mb-2">{stage.desc}</p>
                 <span className="text-xs font-medium text-accent bg-white/60 px-2 py-1 rounded-full">{stage.sub}</span>
@@ -92,16 +111,31 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* 底部CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="#document-types" className="btn-primary text-lg px-8 py-4">
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            <a href="#document-types" className="btn-primary text-lg px-10 py-4 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40">
               立即规划 · 3分钟开始
             </a>
-            <a href="#pricing" className="btn-secondary text-lg px-8 py-4">
+            <a href="#pricing" className="btn-secondary text-lg px-10 py-4">
               了解价格方案
             </a>
           </div>
-          <p className="mt-6 text-sm text-gray-500 text-center">已有 12,847 位用户信赖 · 9类文书类型 · 24h专业审核</p>
+
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="text-2xl md:text-3xl font-bold text-primary">12,847+</div>
+              <div className="text-xs md:text-sm text-gray-500">用户信赖</div>
+            </div>
+            <div className="text-center border-x border-gray-200">
+              <div className="text-2xl md:text-3xl font-bold text-primary">9</div>
+              <div className="text-xs md:text-sm text-gray-500">文书类型</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl md:text-3xl font-bold text-primary">24h</div>
+              <div className="text-xs md:text-sm text-gray-500">专业审核</div>
+            </div>
+          </div>
         </div>
       </section>
 

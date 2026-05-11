@@ -17,10 +17,10 @@ interface Settlement {
   total_orders: number
   total_sales: number
   commission_rate: number
-  commission_amount: number
+  total_commission: number
   platform_fee: number
-  net_amount: number
-  status: 'pending' | 'approved' | 'paid' | 'rejected'
+  blogger_earning: number
+  status: 'pending' | 'processing' | 'paid' | 'rejected'
   bank_name?: string
   bank_account?: string
   remark?: string
@@ -30,7 +30,7 @@ interface Settlement {
 
 const STATUS_NAMES: Record<string, { label: string; color: string }> = {
   'pending': { label: '待确认', color: 'bg-yellow-100 text-yellow-700' },
-  'approved': { label: '已确认', color: 'bg-blue-100 text-blue-700' },
+  'processing': { label: '已确认', color: 'bg-blue-100 text-blue-700' },
   'paid': { label: '已打款', color: 'bg-green-100 text-green-700' },
   'rejected': { label: '已驳回', color: 'bg-red-100 text-red-700' },
 }
@@ -155,11 +155,11 @@ export default function SettlementsAdminPage() {
   })
 
   const totalPending = filteredSettlements
-    .filter(s => s.status === 'pending' || s.status === 'approved')
-    .reduce((sum, s) => sum + s.net_amount, 0)
+    .filter(s => s.status === 'pending' || s.status === 'processing')
+    .reduce((sum, s) => sum + s.blogger_earning, 0)
   const totalPaid = filteredSettlements
     .filter(s => s.status === 'paid')
-    .reduce((sum, s) => sum + s.net_amount, 0)
+    .reduce((sum, s) => sum + s.blogger_earning, 0)
   const totalCount = filteredSettlements.length
 
   if (loading) {
@@ -227,7 +227,7 @@ export default function SettlementsAdminPage() {
           >
             <option value="">全部状态</option>
             <option value="pending">待确认</option>
-            <option value="approved">已确认</option>
+            <option value="processing">已确认</option>
             <option value="paid">已打款</option>
             <option value="rejected">已驳回</option>
           </select>
@@ -348,9 +348,9 @@ export default function SettlementsAdminPage() {
                   <td className="px-4 py-3 text-right">{s.total_orders}</td>
                   <td className="px-4 py-3 text-right">¥{s.total_sales.toLocaleString()}</td>
                   <td className="px-4 py-3 text-right">{s.commission_rate}%</td>
-                  <td className="px-4 py-3 text-right text-[#C9A84C]">¥{s.commission_amount.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right text-[#C9A84C]">¥{s.total_commission.toLocaleString()}</td>
                   <td className="px-4 py-3 text-right text-red-500">¥{s.platform_fee.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-right font-medium">¥{s.net_amount.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right font-medium">¥{s.blogger_earning.toLocaleString()}</td>
                   <td className="px-4 py-3 text-center">
                     <span className={`px-2 py-1 rounded text-xs ${statusInfo.color}`}>
                       {statusInfo.label}
@@ -545,7 +545,7 @@ export default function SettlementsAdminPage() {
               <div className="bg-gray-50 rounded-lg p-3 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-500">佣金金额</span>
-                  <span>¥{showDetailModal.commission_amount.toLocaleString()}</span>
+                  <span>¥{showDetailModal.total_commission.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-red-500">
                   <span>平台费 (15%)</span>
@@ -553,7 +553,7 @@ export default function SettlementsAdminPage() {
                 </div>
                 <div className="flex justify-between font-bold border-t pt-2">
                   <span>实付金额</span>
-                  <span className="text-green-600">¥{showDetailModal.net_amount.toLocaleString()}</span>
+                  <span className="text-green-600">¥{showDetailModal.blogger_earning.toLocaleString()}</span>
                 </div>
               </div>
               {showDetailModal.bank_name && (
@@ -608,7 +608,7 @@ export default function SettlementsAdminPage() {
                   </button>
                 </>
               )}
-              {showDetailModal.status === 'approved' && (
+              {showDetailModal.status === 'processing' && (
                 <button
                   onClick={async () => {
                     await fetch('/api/crm/settlements', {

@@ -8,6 +8,33 @@
   --color-cream: #F7F5F0;
 }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.7s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.7s ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
 body {
   background-color: var(--color-cream);
   color: var(--color-primary);
@@ -82,4 +109,12 @@ body {
 
 .testimonial-card {
   @apply bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md;
+}
+
+.hero-gradient {
+  background: linear-gradient(160deg, #1A365D 0%, #2D4A6F 45%, #C9A84D 100%);
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
 }
