@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { randomBytes, pbkdf2Sync } from 'crypto'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+
+function hashPassword(password: string): string {
+  const salt = randomBytes(16).toString('hex')
+  const hash = pbkdf2Sync(password, salt, 100000, 64, 'sha512').toString('hex')
+  return `${salt}:${hash}`
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,7 +32,7 @@ export async function POST(request: NextRequest) {
     // 如果配置了Supabase，使用真实注册
     if (supabaseUrl && supabaseServiceKey) {
       const supabase = createClient(supabaseUrl, supabaseServiceKey)
-      
+
       // 检查邮箱是否已注册
       const { data: existingUser } = await supabase
         .from('users')
@@ -41,10 +47,11 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      // 创建用户
+      // 创建用户（密码哈希后写入）
+      const passwordHash = hashPassword(password)
       const { data: user, error } = await supabase
         .from('users')
-        .insert({ email, name })
+        .insert({ email, name, password_hash: passwordHash })
         .select()
         .single()
 
@@ -55,7 +62,7 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      // 生成简单的会话token（实际生产应该用JWT）
+      // 生成简单的会话token
       const sessionToken = Buffer.from(`${user.id}:${Date.now()}`).toString('base64')
 
       const response = NextResponse.json({
@@ -81,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 无Supabase配置时的内存注册（仅开发用）
-    const userId = crypto.randomUUID()
+    const userId = randomBytes(16).toString('hex')
     const sessionToken = Buffer.from(`${userId}:${Date.now()}`).toString('base64')
 
     const response = NextResponse.json({

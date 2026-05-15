@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { pbkdf2Sync } from 'crypto'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+
+function verifyPassword(password: string, passwordHash: string): boolean {
+  try {
+    const [salt, storedHash] = passwordHash.split(':')
+    const hash = pbkdf2Sync(password, salt, 100000, 64, 'sha512').toString('hex')
+    return hash === storedHash
+  } catch {
+    return false
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,7 +29,7 @@ export async function POST(request: NextRequest) {
     // 如果配置了Supabase，使用真实登录
     if (supabaseUrl && supabaseServiceKey) {
       const supabase = createClient(supabaseUrl, supabaseServiceKey)
-      
+
       const { data: user, error } = await supabase
         .from('users')
         .select('*')
@@ -26,6 +37,23 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (error || !user) {
+        return NextResponse.json(
+          { error: '邮箱或密码错误' },
+          { status: 401 }
+        )
+      }
+
+      // 验证密码哈希
+      if (user.password_hash) {
+        if (!verifyPassword(password, user.password_hash)) {
+          return NextResponse.json(
+            { error: '邮箱或密码错误' },
+            { status: 401 }
+          )
+        }
+      } else {
+        // 如果没有password_hash字段（老用户），检查name字段作为备用验证
+        // 这个逻辑可以后续删除
         return NextResponse.json(
           { error: '邮箱或密码错误' },
           { status: 401 }
