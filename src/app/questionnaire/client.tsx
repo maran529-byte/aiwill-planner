@@ -1,7 +1,9 @@
 'use client'
 
-import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense, useState, useMemo, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import LegalFooter from '@/components/LegalFooter'
 import { DocumentType, getQuestionnaireByType, shouldSkipQuestion } from '@/lib/questionnaire'
 
 const STORAGE_KEYS: Record<DocumentType, string> = {
@@ -391,6 +393,7 @@ function QuestionnaireContent() {
           您的回答已自动保存，随时可以中断继续
         </p>
       </main>
+      <LegalFooter />
     </div>
   )
 }

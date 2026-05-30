@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import LegalFooter from '@/components/LegalFooter'
 
 export default function AuthPage() {
   const [mode, setMode] = useState<'login' | 'register'>('login')
@@ -171,6 +172,7 @@ export default function AuthPage() {
           </Link>
         </div>
       </div>
+      <LegalFooter />
     </div>
   )
 }

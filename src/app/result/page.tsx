@@ -373,6 +373,7 @@ export default function ResultPage({ searchParams }: { searchParams: { type?: st
           </p>
         </div>
       </footer>
+      <LegalFooter />
     </div>
   )
 }

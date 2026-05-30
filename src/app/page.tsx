@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { PRICING_TIERS } from '@/lib/config'
+import LegalFooter from '@/components/LegalFooter'
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -542,6 +543,7 @@ export default function HomePage() {
           <p className="mt-2 text-sm">私密安全 · 专业合规 · 温暖守护</p>
         </div>
       </footer>
+      <LegalFooter />
     </div>
   )
 }
