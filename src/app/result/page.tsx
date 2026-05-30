@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { jsPDF } from 'jspdf'
 import { PRICING_TIERS } from '@/lib/config'
+import LegalFooter from '@/components/LegalFooter'
 
 interface GenerateResult {
   draft: string
